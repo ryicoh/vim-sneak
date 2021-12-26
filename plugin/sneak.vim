@@ -448,3 +448,25 @@ endif
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
+
+
+highlight SneakShade cterm=NONE ctermbg=NONE ctermfg=grey gui=NONE guibg=NONE guifg=#777777
+highlight Sneak guifg='#7dd1d1' guibg='#000000'
+highlight SneakLabel guifg='#7dd1d1' guibg='#000000'
+highlight SneakScope guifg='#00ffff' guibg='#000000' gui=underline
+
+let s:shade_ids = []
+func s:AddSneakShade() abort
+  let id = matchadd("SneakShade", ".*", 10)
+  call add(s:shade_ids, id)
+endfunc
+
+func s:DeleteSneakShade() abort
+  for id in s:shade_ids
+    call matchdelete(id)
+  endfor
+  let s:shade_ids = []
+endfunc
+
+autocmd User SneakEnter call s:AddSneakShade()
+autocmd User SneakLeave call s:DeleteSneakShade()
