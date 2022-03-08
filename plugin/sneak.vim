@@ -445,15 +445,8 @@ if g:sneak#opt.map_netrw && -1 != stridx(maparg("s", "n"), "Sneak")
   augroup END
 endif
 
-
 let &cpo = s:cpo_save
 unlet s:cpo_save
-
-
-highlight SneakShade cterm=NONE ctermbg=NONE ctermfg=grey gui=NONE guibg=NONE guifg=#777777
-highlight Sneak guifg='#7dd1d1' guibg='#000000'
-highlight SneakLabel guifg='#7dd1d1' guibg='#000000'
-highlight SneakScope guifg='#00ffff' guibg='#000000' gui=underline
 
 let s:shade_ids = []
 func s:AddSneakShade() abort
@@ -468,5 +461,12 @@ func s:DeleteSneakShade() abort
   let s:shade_ids = []
 endfunc
 
-autocmd User SneakEnter call s:AddSneakShade()
-autocmd User SneakLeave call s:DeleteSneakShade()
+augroup sneak_hilights
+  au!
+  au ColorScheme * highlight SneakShade cterm=NONE ctermbg=NONE ctermfg=grey gui=NONE guibg=NONE guifg=#777777
+  au ColorScheme * highlight SneakLabel guifg='#7dd1d1' guibg='#000000'
+  au ColorScheme * highlight SneakScope guifg='#00ffff' guibg='#000000' gui=underline
+
+  au User SneakEnter call s:AddSneakShade()
+  au User SneakLeave call s:DeleteSneakShade()
+augroup END
